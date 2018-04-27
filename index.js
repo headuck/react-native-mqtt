@@ -30,6 +30,14 @@ MqttClient.prototype.connect = function () {
   Mqtt.connect(this.clientRef);
 }
 
+MqttClient.prototype.reconnect = function () {
+  Mqtt.reconnect(this.clientRef);
+}
+
+MqttClient.prototype.isConnected = function () {
+  return Mqtt.isConnected(this.clientRef);
+}
+
 MqttClient.prototype.disconnect = function () {
   Mqtt.disconnect(this.clientRef);
 }

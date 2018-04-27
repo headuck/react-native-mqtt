@@ -75,6 +75,7 @@ public class RCTMqtt
         defaultOptions.putString("willtopic", "");
         defaultOptions.putInt("willQos", 0);
         defaultOptions.putBoolean("willRetainFlag", false);
+        defaultOptions.putBoolean("automaticReconnect", false);
 
         createClient(options);
     }
@@ -129,14 +130,6 @@ public class RCTMqtt
         {
             defaultOptions.putBoolean("will", params.getBoolean("will"));
         }
-        if (params.hasKey("protocolLevel"))
-        {
-            defaultOptions.putInt("protocolLevel", params.getInt("protocolLevel"));
-        }
-        if (params.hasKey("will"))
-        {
-            defaultOptions.putBoolean("will", params.getBoolean("will"));
-        }
         if (params.hasKey("willMsg"))
         {
             defaultOptions.putString("willMsg", params.getString("willMsg"));
@@ -152,6 +145,10 @@ public class RCTMqtt
         if (params.hasKey("willRetainFlag"))
         {
             defaultOptions.putBoolean("willRetainFlag", params.getBoolean("willRetainFlag"));
+        }
+        if(params.hasKey("automaticReconnect"))
+        {
+            defaultOptions.putBoolean("automaticReconnect", params.getBoolean("automaticReconnect"));
         }
 
         ReadableMap options = defaultOptions;
@@ -235,6 +232,8 @@ public class RCTMqtt
             mqttOptions.setWill(topic, options.getString("willMsg").getBytes(), options.getInt("willQos"), options.getBoolean("willRetainFlag"));
         }
 
+        mqttOptions.setAutomaticReconnect( options.getBoolean("automaticReconnect"));
+
         memPer = new MemoryPersistence();
 
         try
@@ -252,6 +251,29 @@ public class RCTMqtt
         client.setCallback(this);
     }
 
+    public void reconnect()
+    {
+        try {
+            WritableMap params = Arguments.createMap();
+            params.putString("event", "reconnecting");
+            params.putString("message", "try to reconnect");
+            sendEvent(reactContext, "mqtt_events", params);
+
+            client.reconnect();
+        }
+        catch(MqttException e)
+        {
+            WritableMap params = Arguments.createMap();
+            params.putString("event", "error");
+            params.putString("message", e.getMessage());
+            sendEvent(reactContext, "mqtt_events", params);
+        }
+    }
+
+    public boolean isConnected()
+    {
+        return client.isConnected();
+    }
 
     public void connect()
     {
@@ -298,7 +320,7 @@ public class RCTMqtt
         {
             WritableMap params = Arguments.createMap();
             params.putString("event", "error");
-            params.putString("message", "Can't create connection");
+            params.putString("message", e.getMessage());
             sendEvent(reactContext, "mqtt_events", params);
         }
     }
@@ -329,7 +351,7 @@ public class RCTMqtt
         }
         catch (MqttException e)
         {
-            log("Disconnect failed ...");
+            log(e.getMessage());
         }
     }
 
@@ -361,7 +383,7 @@ public class RCTMqtt
         }
         catch (MqttException e)
         {
-            log("Cann't subscribe");
+            log("Can't subscribe");
             e.printStackTrace();
         }
     }
@@ -433,10 +455,10 @@ public class RCTMqtt
         // Called when the connection to the server has been lost.
         // An application may choose to implement reconnection
         // logic at this point. This sample simply exits.
-        log(new StringBuilder("Connection to lost! ").append(cause).toString());
+        log(new StringBuilder("Connection lost! ").append(cause).toString());
         WritableMap params = Arguments.createMap();
         params.putString("event", "error");
-        final String errorDescription = new StringBuilder("Connection to lost! ")
+        final String errorDescription = new StringBuilder("Connection lost! ")
                 .append(cause).toString();
         params.putString("message", errorDescription);
         sendEvent(reactContext, "mqtt_events", params);
@@ -499,10 +521,11 @@ public class RCTMqtt
 
     private boolean needToReconnect(@NonNull final MqttException exception)
     {
-        int reasonCode = exception.getReasonCode();
-        return reasonCode == MqttException.REASON_CODE_SERVER_CONNECT_ERROR ||
-                reasonCode == MqttException.REASON_CODE_CLIENT_EXCEPTION ||
-                reasonCode == MqttException.REASON_CODE_CONNECTION_LOST;
+        return false;
+//        int reasonCode = exception.getReasonCode();
+//        return reasonCode == MqttException.REASON_CODE_SERVER_CONNECT_ERROR ||
+//                reasonCode == MqttException.REASON_CODE_CLIENT_EXCEPTION ||
+//                reasonCode == MqttException.REASON_CODE_CONNECTION_LOST;
     }
 
     private void reconnectIfNeeded(@NonNull final Throwable cause)

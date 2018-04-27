@@ -54,6 +54,17 @@ public class RCTMqttModule
     {
         clients.get(clientRef).connect();
     }
+    @ReactMethod
+    public void reconnect(@NonNull final String clientRef)
+    {
+        clients.get(clientRef).reconnect();
+    }
+
+    @ReactMethod
+    public void isConnected(@NonNull final String clientRef, Promise promise)
+    {
+        promise.resolve(clients.get(clientRef).isConnected());
+    }
 
     @ReactMethod
     public void disconnect(@NonNull final String clientRef)
