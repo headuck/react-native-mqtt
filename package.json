@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rusfearuth/react-native-mqtt.git"
+    "url": "git+https://github.com/phachem/react-native-mqtt.git"
   },
   "keywords": [
     "mqtt",
@@ -18,11 +18,12 @@
   "author": "Tuan PM <tuanpm@live.com> (http://tuanpm.net)",
   "contributors": [
     { "name" : "Yury Korolev", "email" : "yury.korolev@gmail.com", "url" : "http://anjlab.com" },
-    { "name" : "Alexander Ustinov", "email" : "rusfearuth@gmail.com", "url" : "http://github.com/rusfearuth" }
+    { "name" : "Alexander Ustinov", "email" : "rusfearuth@gmail.com", "url" : "http://github.com/rusfearuth" },
+    { "name" : "Paul Hachem", "email" : "phachem@yahoo.com", "url" : "http://github.com/phachem" }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rusfearuth/react-native-mqtt/issues"
+    "url": "https://github.com/phachem/react-native-mqtt/issues"
   },
-  "homepage": "https://github.com/rusfearuth/react-native-mqtt#readme"
+  "homepage": "https://github.com/phachem/react-native-mqtt#readme"
 }
