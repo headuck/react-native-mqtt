@@ -19,11 +19,11 @@ This library in progress developing, api may change, SSL/TLS non verify
 
 #### JS
 ```bash
-npm install rusfearuth/react-native-mqtt --save
+npm install phachem/react-native-mqtt --save
 ```
 or
 ```bash
-yarn add rusfearuth/react-native-mqtt
+yarn add phachem/react-native-mqtt
 ```
 
 
@@ -126,8 +126,11 @@ MQTT.createClient({
     + event: `error` - error
     + event: `message` - message object
   - `connect`: begin connection
+  - `reconnect`: begin reconnection
+  - `isConnected`: async isConnected
   - `disconnect`: disconnect
   - `subscribe(topic, qos)`
+  - `unsubscribe(topic)`
   - `publish(topic, payload, qos, retain)`
 
 * `message`
