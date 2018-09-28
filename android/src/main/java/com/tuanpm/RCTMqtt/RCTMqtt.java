@@ -62,7 +62,7 @@ public class RCTMqtt
         defaultOptions.putInt("port", 1883);
         defaultOptions.putString("protocol", "tcp");
         defaultOptions.putBoolean("tls", false);
-        defaultOptions.putInt("keepalive", 1883);
+        defaultOptions.putInt("keepalive", 60);
         defaultOptions.putString("clientId", "react-native-mqtt");
         defaultOptions.putInt("protocolLevel", 4);
         defaultOptions.putBoolean("clean", true);
@@ -174,7 +174,7 @@ public class RCTMqtt
             {
                 /*
         			http://stackoverflow.com/questions/3761737/https-get-ssl-with-android-and-self-signed-server-certificate
-        
+
         			WARNING: for anybody else arriving at this answer, this is a dirty,
         			horrible hack and you must not use it for anything that matters.
         			SSL/TLS without authentication is worse than no encryption at all -
@@ -233,6 +233,8 @@ public class RCTMqtt
         }
 
         mqttOptions.setAutomaticReconnect( options.getBoolean("automaticReconnect"));
+
+        mqttOptions.setConnectionTimeout(10); // 10 seconds;
 
         memPer = new MemoryPersistence();
 

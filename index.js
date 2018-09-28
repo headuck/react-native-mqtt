@@ -34,8 +34,9 @@ MqttClient.prototype.reconnect = function () {
   Mqtt.reconnect(this.clientRef);
 }
 
-MqttClient.prototype.isConnected = function () {
-  return Mqtt.isConnected(this.clientRef);
+MqttClient.prototype.isConnected = async function () {
+  let ret = await Mqtt.isConnected(this.clientRef);
+  return ret;
 }
 
 MqttClient.prototype.disconnect = function () {
