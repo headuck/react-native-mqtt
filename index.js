@@ -55,6 +55,8 @@ MqttClient.prototype.publish = function(topic, payload, qos, retain) {
   Mqtt.publish(this.clientRef, topic, payload, qos, retain);
 }
 
+const emitter = new NativeEventEmitter(Mqtt);
+
 module.exports = {
   clients: [],
   eventHandler: null,
@@ -64,7 +66,7 @@ module.exports = {
     });
   },
   setEventHandler: function() {
-    this.eventHandler = DeviceEventEmitter.addListener("mqtt_events", (data) =>
+    this.eventHandler = emitter.addListener("mqtt_events", (data) =>
       this.dispatchEvents(data));
   },
   createClient: async function(options) {
