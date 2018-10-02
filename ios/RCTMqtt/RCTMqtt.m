@@ -53,8 +53,13 @@ RCT_EXPORT_METHOD(createClient:(NSDictionary *) options
 
 }
 
-RCT_EXPORT_METHOD(removeClient:(nonnull NSString *) clientRef) {
+RCT_EXPORT_METHOD(removeClient:(nonnull NSString *) clientRef
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+
     [[self clients] removeObjectForKey:clientRef];
+    resolve([NSNumber numberWithInt:clientRef]);
+
 }
 
 RCT_EXPORT_METHOD(connect:(nonnull NSString *) clientRef) {

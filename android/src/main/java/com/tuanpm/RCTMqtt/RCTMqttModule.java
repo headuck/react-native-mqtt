@@ -73,6 +73,12 @@ public class RCTMqttModule
     }
 
     @ReactMethod
+    public void removeClient(@NonNull final String clientRef, Promise promise) {
+        clients.remove(clientRef);
+        promise.resolve(clientRef);
+    }
+
+    @ReactMethod
     public void subscribe(@NonNull final String clientRef,
                           @NonNull final String topic,
                           final int qos)
